@@ -1,0 +1,12 @@
+CREATE TABLE farms (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    name VARCHAR(150) NOT NULL,
+    origin VARCHAR(200) NOT NULL,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_farms_origin
+    ON farms(origin);
