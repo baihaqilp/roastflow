@@ -26,9 +26,9 @@ public class FarmServiceImpl implements FarmService {
     @Override
     public FarmResponse create(CreateFarmRequest request) {
 
-        if (farmRepository.existByNameIgnoreCase(request.name())){
+        if (farmRepository.existsByNameIgnoreCase(request.name())){
             throw new DuplicateResourceException(
-                    "Farm already exist: " + request.name()
+                    "Farm already exists: " + request.name()
             );
         }
 

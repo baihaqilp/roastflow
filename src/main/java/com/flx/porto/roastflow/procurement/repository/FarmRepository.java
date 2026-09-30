@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface FarmRepository extends JpaRepository<Farm, UUID> {
 
-    boolean existByNameIgnoreCase(String name);
+    boolean existsByNameIgnoreCase(String name);
 }
