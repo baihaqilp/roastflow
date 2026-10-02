@@ -2,7 +2,7 @@ CREATE TABLE purchases(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     supplier_id UUID NOT NULL,
-    farms_id UUID NOT NULL,
+    farm_id UUID NOT NULL,
     variety_id UUID NOT NULL,
 
     purchase_date DATE NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE purchases(
         REFERENCES suppliers(id),
 
     CONSTRAINT fk_purchases_farm
-        FOREIGN KEY (farms_id)
+        FOREIGN KEY (farm_id)
         REFERENCES farms(id),
 
     CONSTRAINT fk_purchases_variety
@@ -41,7 +41,7 @@ CREATE INDEX idx_purchases_supplier_id
     ON purchases(supplier_id);
 
 CREATE INDEX idx_purchases_farms_id
-    ON purchases(farms_id);
+    ON purchases(farm_id);
 
 CREATE INDEX idx_purchases_variety_id
     ON purchases(variety_id);
