@@ -148,4 +148,67 @@ public class ProcessingBatch {
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public void startProcessing() {
+
+        if (status != ProcessingStatus.PLANNED) {
+            throw new IllegalStateException(
+                    "Processing batch can only start from PLANNED status"
+            );
+        }
+
+        this.status = ProcessingStatus.PROCESSING;
+    }
+
+    public void startDrying(LocalDate dryingStartDate) {
+
+        if (status != ProcessingStatus.PROCESSING) {
+            throw new IllegalStateException(
+                    "Drying can only start when processing batch is PROCESSING"
+            );
+        }
+
+        this.dryingStartDate = dryingStartDate;
+        this.status = ProcessingStatus.DRYING;
+    }
+
+    public void complete(
+            LocalDate dryingEndDate,
+            BigDecimal outputGreenBeanKg
+    ) {
+
+        if (status != ProcessingStatus.DRYING) {
+            throw new IllegalStateException(
+                    "Processing batch can only be completed from DRYING status"
+            );
+        }
+
+        if (dryingStartDate == null) {
+            throw new IllegalStateException(
+                    "Drying start date is required"
+            );
+        }
+
+        if (dryingEndDate.isBefore(dryingStartDate)) {
+            throw new IllegalArgumentException(
+                    "Drying end date cannot be before drying start date"
+            );
+        }
+
+        if (outputGreenBeanKg.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(
+                    "Output green bean weight must be greater than zero"
+            );
+        }
+
+        if (outputGreenBeanKg.compareTo(inputWeightKg) > 0) {
+            throw new IllegalArgumentException(
+                    "Output green bean weight cannot exceed input weight"
+            );
+        }
+
+        this.dryingEndDate = dryingEndDate;
+        this.outputGreenBeanKg = outputGreenBeanKg;
+        this.status = ProcessingStatus.COMPLETED;
+    }
 }
